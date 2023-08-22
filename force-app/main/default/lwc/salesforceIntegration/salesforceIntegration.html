@@ -1,0 +1,37 @@
+<template>
+    <template  if:true={showbutton}>
+    <div class="box">
+            <lightning-file-upload label="Upload File" name="fileUploader"
+                accept=".xlsx, .jpeg, .csv, .png, .doc, .docx, .pdf, .txt" multiple="false" onuploadfinished={handleUploadFinished}>
+            </lightning-file-upload>
+    </div>
+    </template>
+    <template if:true={fileData}>
+        <table class="slds-table slds-table_bordered slds-table_cell-buffer table">
+            <thead>
+                <tr class="slds-line-height_reset" style="background-color: rgb(222, 215, 215);">
+                    <td></td>
+                    <td>File/Folder</td>
+                    <td>Type</td>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={fileData} for:item="item">
+                   
+                    <tr key={item.Id} style="background-color: rgb(255, 248, 248);">
+                        <td> 
+                            <template if:true={item.iconType}>
+                                <lightning-icon icon-name="doctype:attachment" ></lightning-icon>
+                            </template>
+                            <template if:false={item.iconType}>
+                                <lightning-icon icon-name="doctype:image" ></lightning-icon>
+                            </template>
+                        </td>
+                        <td>{item.Title}</td>
+                        <td>{item.FileType}</td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </template>
+</template>

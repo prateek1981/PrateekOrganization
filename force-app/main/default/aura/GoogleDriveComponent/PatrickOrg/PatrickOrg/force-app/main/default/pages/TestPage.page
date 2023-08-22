@@ -1,0 +1,5 @@
+<apex:page >
+    <apex:outputText value="Hi this is test" >
+    	
+    </apex:outputText>
+</apex:page>

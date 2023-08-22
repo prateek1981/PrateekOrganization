@@ -1,0 +1,77 @@
+<template>
+   
+        <template if:true={check}>
+            <lightning-breadcrumbs>
+                <template for:each={breadcrumbs} for:item="item">
+                    <p onclick={handleBreadCrumbs} data-folderclicked={item} key={item}> 
+                        <lightning-breadcrumb key={item} label={item} value={item}>
+                        </lightning-breadcrumb>
+                       </p> >
+                </template>
+            </lightning-breadcrumbs>
+        </template>
+    <div >
+        <template if:true={showData}>
+            <template if:true={fileData} >
+                <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                    <thead>
+                        <tr class="slds-line-height_reset" style="background-color: rgb(222, 215, 215);">
+                            <td> Type</td>
+                            <td> File/Folder</td>
+                            <td> Download</td>
+                            <td> Delete</td>
+                            <td> </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={fileData} for:item="item">
+                        <tr key={item} style="background-color: rgb(246, 167, 167);">
+                            
+                            <template if:true={item.isFolder}>
+                                <lightning-icon icon-name="doctype:folder" ></lightning-icon>
+                            </template>
+                            <template if:false={item.isFolder}>
+                                <lightning-icon icon-name="doctype:attachment"></lightning-icon>
+                            </template>
+                            <td onclick={fillBreadcrumb} data-folderid={item.id}  data-foldername={item.name} data-foldertype={item.type}>{item.name}</td>
+                            <td>    
+                                <lightning-button-icon
+                                    icon-name="utility:download"
+                                    variant="bare"
+                                    alternative-text="Download"
+                                    onclick={downloadFile}
+                                    data-idfile={item.id}>
+                                </lightning-button-icon>
+                            </td>
+                            <td>
+                                <lightning-button-icon
+                                    icon-name="utility:delete"
+                                    variant="bare"
+                                    alternative-text="Delete"
+                                    onclick={deleteFile}
+                                    data-fid={item.id}
+                                    data-ftype={item.type}>
+                                </lightning-button-icon>
+                            </td>
+                        </tr>
+                    </template>
+                    </tbody>
+                </table>
+                
+            </template>
+    </template>
+        <div>
+            <lightning-button variant="base" label="Create Folder" title="Create Folder" onclick={createFolder} class="slds-m-left_x-small"></lightning-button>
+           
+        </div>
+        <div>
+                
+                    <lightning-file-upload
+                        label="Select File"
+                        name="fileUploader"
+                        onuploadfinished={handleUploadFinished}>
+                    </lightning-file-upload>
+        </div>
+    </div>
+  
+</template>

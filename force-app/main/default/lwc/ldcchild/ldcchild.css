@@ -1,0 +1,19 @@
+    .container {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+    }
+    
+    .section {
+        flex: 1;
+    }
+
+    .heading {
+        text-align: center;
+        font-weight: bold;
+      }
+
+    .button{
+        text-align: center;
+        margin-top: 10px;
+    }

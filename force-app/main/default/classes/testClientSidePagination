@@ -1,0 +1,7 @@
+@isTest
+public class testClientSidePagination{
+    @isTest public static void testFetchObject(){
+        Client_Side_Pagination_Controler csp=new Client_Side_Pagination();
+        csp.fetchObject();
+    }
+}

@@ -1,0 +1,109 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" controller="GoogleDriveController" >
+	<aura:attribute name="NewWindow" type="Object"/>
+    <aura:attribute  name="text" type="String" access="global" default="application/x-www-form-urlencoded"/>
+    <aura:attribute  name="image" type="String" access="global" default="image/jpeg"/>
+    <aura:attribute name="check" type="Boolean" default="false"/>
+    <aura:attribute name="addr" type="String"  default="NULL"/>
+    <aura:attribute name="dataList" type="Object[]"/>
+    <aura:attribute  name="audio" type="String" access="global" default="video/mp4"/>
+    <aura:attribute  name="video" type="String" access="global" default="video/quicktime"/>
+    <aura:attribute  name="folder" type="String" access="global" default="application/vnd.google-apps.folder"/>
+    <aura:attribute name="spreadSheet" type="String" access="global" default="application/vnd.google-apps.spreadsheet"/>
+    <aura:attribute name="pdf" type="String" access="global" default="application/pdf"/>
+    <aura:attribute name="png" type="String" access="global" default="image/png"/>
+  	<aura:attribute name="breadcrumbs" type="List" access="global" default="Home"/>
+    <aura:attribute name="mapofIdName" type="Map" access="global"/>
+    <aura:attribute name="showTable" type="Boolean" default="True"/>
+    <aura:attribute  name="parentFolder" type="String" access="global" default="0"/>
+    <aura:handler name="init" value="{!this}" action="{!c.userCheck}"/>
+    <div style="background-color: rgb(222, 215, 215);height:30px;width:100%;" >
+      <lightning:breadcrumbs>
+         <aura:iteration items="{!v.breadcrumbs}" var="breadcrumb" >
+              <p onclick="{!c.handleBreadCrumbs}" data-folderclicked="{!breadcrumb}"> 
+               <lightning:breadcrumb aura:id="myBreadCrumb" label="{!breadcrumb}" name="{!breadcrumb}"></lightning:breadcrumb>
+              </p> >
+         </aura:iteration>
+      </lightning:breadcrumbs>
+   </div>
+<div style="background-color: rgb(222, 215, 215);height:30px;width:100%; ">
+   <table>
+      <tr>
+         <td style="width: 15%;font-size:medium;"><b>Mime Type</b></td>
+         <td style="text-align:left;width: 15%;font-size:medium;"><b>File/Folder</b> </td>
+         <td style="text-align:right;width: 15%;font-size:medium;"><b>Download</b> </td>
+         <td style="text-align:center;width: 15%;font-size:medium;"><b>Delete</b> </td>
+      </tr>
+   </table>
+</div>
+<div style="background-color: rgb(255, 255, 255);height:400px;width:100%; overflow-y: scroll;">
+   <table>
+      <aura:iteration items="{!v.dataList}" var="item">
+          
+         <tr>
+           
+            <td style="width: 15%;">
+              
+               <aura:if isTrue="{!item.mimeType == v.image}">
+                  <p><lightning:icon  iconName="doctype:image"  alternativeText="Approved"    title="Image">/</lightning:icon></p>
+                     <aura:set attribute="else">
+                        <aura:if isTrue="{!item.mimeType == v.audio}">
+                           <p> <lightning:icon  iconName="doctype:mp4"  alternativeText="Approved"    title="Audio">/</lightning:icon></p>
+                           <aura:set attribute="else">
+                              <aura:if isTrue="{!item.mimeType == v.video}">
+                                 <p> <lightning:icon  iconName="doctype:video"  alternativeText="Approved"    title="Video">/</lightning:icon></p>
+                                 <aura:set attribute="else">
+                                    <aura:if isTrue="{!item.mimeType == v.spreadSheet}">
+                                       <p> <lightning:icon  iconName="doctype:gsheet"  alternativeText="Approved"    title="Spreadsheet">/</lightning:icon></p>
+                                       		 <aura:set attribute="else"> 
+                                                 <aura:if isTrue="{!item.mimeType == v.text}">
+                                                     <p> <lightning:icon  iconName="doctype:attachment"  alternativeText="Approved"  title="Spreadsheet">/</lightning:icon></p>
+                                                     <aura:set attribute="else"> 
+                                                         <aura:if isTrue="{!item.mimeType == v.pdf}">
+                                                             <p> <lightning:icon  iconName="doctype:pdf"  alternativeText="Approved"  title="Spreadsheet">/</lightning:icon></p>
+                                                         </aura:if>
+                                                     </aura:set>
+                                                 </aura:if>
+                                        </aura:set>    
+                                    </aura:if>
+                                 </aura:set>
+                              </aura:if>
+                           </aura:set>
+                        </aura:if>
+                     </aura:set>
+               </aura:if>
+               <aura:if isTrue="{!item.mimeType == v.folder}">
+                     <p> <lightning:icon iconName="doctype:folder" alternativeText="Approved" title="folder">/</lightning:icon></p>
+               </aura:if>
+            </td>
+            <td style="width: 15%;color: rgb(32, 123, 242);font-family:Mongolian Baiti;font-size:100%;text-align:left;" >
+                <p onclick="{!c.helperHandleFolderData}"  data-folderid="{!item.id}">
+                     {!item.name}
+                </p>
+               </td>
+            <td style="text-align:right;width: 15%;"  >
+               <aura:if  isTrue="{!item.mimeType != v.folder}">
+                  <p onclick="{!c.handleDownloadFile}" data-rec="{!item.id}" data-mimetype="{!item.mimeType}" data-foldername="{!item.name}">
+                     <lightning:icon iconName="action:download" alternativeText="Approved" size="x-small"   title="DownloadFiles"/>
+                  </p>
+               </aura:if>
+            </td>
+            <td style="text-align:center;width: 15%;">
+               <p data-delid="{!item.id}" onclick="{!c.handleDeleteFile}">
+                   <lightning:icon  iconName="action:delete"  alternativeText="Approved"  size="x-small"  title="RecycleBin"/>
+               </p>
+            </td>
+            </tr>
+            <br></br>
+         </aura:iteration>
+      </table>
+   </div>
+   <div style="background-color: rgb(222, 215, 215);height:30px;width:100%; ">
+      <lightning:button   name="create" label="Create New Folder" onclick="{! c.createNew }" variant="brand"/>
+      <lightning:fileUpload
+        
+        name="fileUploader"
+        multiple="false"
+        accept=".pdf, .docx, .xlsx, .png, .txt"
+        onuploadfinished="{!c.handleUploadFinished}"/>
+   </div>
+</aura:component>

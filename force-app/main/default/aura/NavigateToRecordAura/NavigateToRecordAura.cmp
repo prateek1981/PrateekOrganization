@@ -1,0 +1,4 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+<lightning:navigation aura:id="navService"></lightning:navigation>
+<button onclick="{!c.navigateToRecord}">Click here</button>
+</aura:component>	

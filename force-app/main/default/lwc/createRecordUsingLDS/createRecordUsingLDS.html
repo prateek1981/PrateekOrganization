@@ -1,0 +1,8 @@
+<template>
+    <lightning-card title="Lightning Record edit form">
+        <lightning-record-edit-form object-api-name={objectName}  record-id={recordId}>
+            <lightning-input-field field-name="Name"></lightning-input-field>
+            <lightning-button type="submit" label="submit" onclick={submitRecord}></lightning-button>
+        </lightning-record-edit-form>
+    </lightning-card>
+</template>

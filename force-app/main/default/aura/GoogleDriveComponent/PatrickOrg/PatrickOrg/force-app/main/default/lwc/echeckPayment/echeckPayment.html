@@ -1,0 +1,16 @@
+<template>
+    <div class="main">
+        <div class="box">
+            <div class="box2"> 
+              <img src={processImage} alt="Image Description" class="imageClass"/>
+            </div>
+            <br>
+            <input type="text" class="card-input" name="routingnumber" onchange={handleChange} placeholder="Enter routing number" />
+            <input type="text" class="account-number" name="accountnumber" onchange={handleChange} placeholder="Enter account number" />
+            <input type="text" class="account-name" name="accountname" onchange={handleChange} placeholder="Enter account name" />
+            <br>
+            <br>
+            <lightning-button label="Place Order" title="Non-primary action" onclick={handlePayment} class="place-order"></lightning-button>
+        </div>
+    </div> 
+</template>

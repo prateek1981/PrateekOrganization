@@ -1,0 +1,139 @@
+<apex:component controller="ConController" allowDML="true">
+    <apex:attribute name="selectobject" description="pass sobject to component" type="String" assignTo="{!objValue}"/>
+    <apex:attribute name="selectFields" description="pass field list to component" type="SelectOption[]" assignTo="{!fvalue}"/>
+      
+      <script>   
+     function allCheckboxes(masterBOX){
+        var ChildCheckBox = document.getElementsByClassName('input'); 
+       
+        <!-- getElementsByClassName --> returns a collection of elements with a specified class name(s) -->               
+            for(var i=0; i<ChildCheckBox.length; i++){                                          
+                ChildCheckBox[i].checked = masterBOX.checked;
+                
+            }
+    } 
+    function DeselectCheckBox(childbox){
+        var masterCheckBox = document.getElementsByClassName('header')[0];
+        var ChildCheckBox = document.getElementsByClassName('input'); 
+        var numberOfCheckBox = 0;  
+        for(var i=0; i<ChildCheckBox.length; i++){
+            if(ChildCheckBox[i].checked==true){
+                numberOfCheckBox++; 
+            }
+            if(ChildCheckBox.length == numberOfCheckBox){
+                masterCheckBox.checked = true;
+            }
+            else if(ChildCheckBox.length != numberOfCheckBox){
+                masterCheckBox.checked = false;
+            }
+        }
+    }
+       
+    function downloadCSV(csv) {
+        var csvFile;
+        var downloadLink;
+        
+        // CSV file
+        csvFile = new Blob([csv], {type: "text/csv"});
+        
+        // Download link
+        downloadLink = document.createElement("a");
+        
+        // File name
+        downloadLink.download = "MyCsv.csv";
+        
+        // Create a link to the file
+        downloadLink.href = window.URL.createObjectURL(csvFile);
+        
+        // Hide download link
+        downloadLink.style.display = "none";
+        
+        // Add the link to DOM
+        document.body.appendChild(downloadLink);
+        
+        // Click download link
+        downloadLink.click();
+    }
+    </script>  
+    <apex:actionFunction action="{!showRecord}" name="scriptfun1" id="pb"/>
+    <apex:pageMessages id="mes"></apex:pageMessages>
+    <apex:pageBlock title="  Record  " id="mainBlock">
+      
+           <div>
+              <div style="text-align: left; margin-top:10px;float:center; ">
+                     <apex:commandButton value="New Record" action="{!createNewRcord}" onclick="target = '_blank'" status="loading"  />
+                     <apex:commandButton value="  Delete Selected " action="{!deleteRecord}" reRender="mainBlock,mes" status="loading" />
+                     <apex:commandButton value="  Download CSV" action="{!downloadCsv}" oncomplete="downloadCSV('{!csvString}'),DeselectCheckBox(this,'header')" status="loading" reRender="mes"/>  
+               </div>
+               <div  style="text-align: right;margin-top: -17px;">
+                <apex:repeat value="{!Dictionery}" var="dict">
+                    <apex:commandLink value="{!dict}" action="{!DictioneryMethod}" status="loading" reRender="refreshpagesizeindict,refresh,mainBlock,mes"  oncomplete="DeselectCheckBox(this,'header')" >
+                        <apex:param value="{!dict}" assignTo="{!selecteddisc}" name="selAlpha"/>        
+                    </apex:commandLink>
+                </apex:repeat>
+            </div>
+        </div>
+            <apex:outputPanel id="refreshpagesizeindict" style="overflow:auto;width:1200px;height:250px" layout="block">
+            <apex:pageBlockTable value="{! listWrapper}" var="r">
+                 <apex:column >
+                <apex:facet name="header" >
+                    <apex:inputCheckbox onclick="allCheckboxes(this,'input')" value="{!r.selectedCheck}" styleClass="header" />
+                </apex:facet>
+                    <apex:inputCheckbox styleClass="input" onclick="DeselectCheckBox(this,'header')" value="{!r.selectedCheck}" ></apex:inputCheckbox>
+            </apex:column>
+                <apex:column headerValue="Edit Delete">
+                    <apex:outputLink title="  Edit | " value="/{!r.wObj.Id+'/e?retUrl=%2f'+r.wObj.Id}" target="_blank">Edit</apex:outputLink>
+                     <apex:commandLink value="   delete "   action="{!deleteLink}"  status="Loading" >
+                        <apex:param name="dele" value="{!r.wObj.Id}" assignTo="{!recordId}"/>
+                    </apex:commandLink>
+                    
+                </apex:column>
+                <apex:repeat value="{!selectOpt}" var="f">
+                    <apex:column value="{!r.wObj[f.value]}" onclick="window.open('/{!r.wobj.Id}')">
+                        <apex:facet name="header">
+                            <apex:commandLink value="{!f.label}" action="{!colSorting}" status="loading" reRender="refreshpagesizeindict">
+                                    <apex:param name="clickToSort" value="{!f.value}" assignTo="{!sortField}"/>
+                                </apex:commandLink>
+                            </apex:facet>
+                    </apex:column>
+                
+                </apex:repeat>
+            
+            </apex:pageBlockTable>
+            </apex:outputPanel>
+            
+             <apex:outputPanel >
+                <table>
+                    <div>
+                        <div style="text-align:left;float:left;" >
+                            <apex:selectList value="{!size}" size="1" id="size">
+                                             
+                            Record size
+                                <apex:selectOptions value="{!setRecordPerPage}"/>
+                                <apex:actionSupport action="{!recordPerPage}" event="onchange" reRender="mainBlock" status="loading" oncomplete="DeselectCheckBox(this,'header')"/>
+                            </apex:selectList>
+                        </div>                       
+                            <div style="text-align: center; margin-top:10px;float:center; ">
+                                <apex:commandButton action="{!firstPage}" value="First" reRender="mainBlock" disabled="{!!setCon.hasPrevious}" style="margin-left" oncomplete="DeselectCheckBox(this,'header')" status="loading"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <apex:commandButton action="{!previousPage}" value="previous" reRender="mainBlock" disabled="{!!setCon.hasPrevious}" style="margin-left" oncomplete="DeselectCheckBox(this,'header')" status="loading" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <apex:commandButton action="{!nextPage}" value="Next" reRender="mainBlock" disabled="{!!setCon.hasNext}" style="margin-left" oncomplete="DeselectCheckBox(this,'header')" status="loading"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <apex:commandButton action="{!lastPage}" value="Last" reRender="mainBlock" disabled="{!!setCon.hasNext}" style="margin-left" oncomplete="DeselectCheckBox(this,'header')" status="loading"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </div>
+                            <div style="text-align: right;margin-top:-30px;float:right; ">
+                        <apex:outputText >
+                            <p>
+                                
+                            Page &nbsp;&nbsp;&nbsp;<apex:inputText value="{!setCon.pageNumber}" >
+                            <apex:actionSupport action="{!changePage}" event="onchange" status="loading" reRender="mainBlock" oncomplete="DeselectCheckBox(this,'header')"/>
+                            </apex:inputText>&nbsp;&nbsp;of&nbsp;&nbsp;
+                              {!If(mod(setCon.resultsize,setCon.pageSize)==0,setCon.resultSize/setCon.pageSize,floor(setCon.resultSize/setCon.pageSize)+1)} 
+                             </p>
+    
+                        </apex:outputText>     
+                           </div>   
+                     </div>                   
+                 </table>
+            </apex:outputPanel>
+    </apex:pageBlock>
+    
+</apex:component>

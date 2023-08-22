@@ -1,0 +1,47 @@
+<aura:component controller="ServerSidePaginationController" implements="force:appHostable">
+	<aura:attribute name="allObject" type="List" access="global"/>
+	<aura:attribute name="allField" type="List" access="global"/>
+	<aura:attribute name="selectedObject" type="String" access="global"/>
+	<aura:attribute name="selectedField" type="String" access="global"/>
+    <aura:attribute name="selectedFields" type="List" access="global"/>
+    <aura:attribute name="selectedRecords" type="List" access="global"/>
+    <aura:attribute name="myColumns" type="List" access="global" />
+	<aura:attribute name="toBeDisplay" type="boolean" default="false"/>
+	<aura:attribute name="fieldLabel" type="List" access="global"/>
+	<aura:attribute name="isProcess" type="Boolean" default="true"/>
+	<aura:handler name="init" value="{!this}" action="{!c.init}" />
+    <aura:handler name="change" value="{!v.selectedObject}" action="{!c.handleChangeForObject}"/>
+	 
+    <div style="{! 'width:'+150+'px;'}" >
+                	<Lightning:select name="objects"  aura:id="objectId" value="{!v.selectedObject}" >
+                        <option value="">--None--</option>
+                        <aura:iteration items="{!v.allObject}" var="object">
+                            <option text="{!object.value}" value="{!object.key}" selected="{!object.selected}"/>
+                        </aura:iteration>
+    				</Lightning:select>
+    </div>
+	        
+    <div >
+	<aura:if isTrue="{!v.selectedObject}">
+		<div  style="width: 850px ; height : 300px;">
+		<span>
+            <lightning:dualListbox aura:id="select options" 
+ 			 sourceLabel="Available Options" 
+ 			 selectedLabel="Selected Options" 
+  			 options="{! v.allField }"
+             value="{!v.selectedFields}"                     
+ 			 onchange="{! c.handleChange}"/>
+		</span>
+			<div >                
+               <span>
+        			<lightning:button label="Process" class="slds-float_center" onclick="{!c.fetchRecords}" disabled="{!v.isProcess}"></lightning:button>
+               </span>
+    		</div>
+		</div>
+	</aura:if>
+	</div>
+
+    <aura:if isTrue="{!(v.toBeDisplay)}">
+      <c:ServerSidePaginationChildComponent  selectedField ="{!v.selectedFields}"  selectedObj="{!v.selectedObject}" />
+    </aura:if> 
+</aura:component>

@@ -1,0 +1,9 @@
+<template>
+    <div>
+      <template for:each={breadcrumbs} for:item="item" key={item.id}>
+        <p onclick={handleBreadcrumbs} key={item.id} data-foldername={item.label} style="display: inline-block; margin-right: 5px;">
+          {item.label}>
+        </p>
+      </template>
+    </div>
+  </template>

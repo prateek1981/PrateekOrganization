@@ -1,0 +1,47 @@
+<template>
+    <div class="slds-tabs_card">
+        <div class="slds-page-header">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <span class="slds-icon_container slds-icon-standard-opportunity">
+                                 <lightning-icon icon-name="standard:recipe" alternative-text="recipe" title="recipe"></lightning-icon>
+                            </span>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1>
+                                        <span>LWC Combobox</span>
+                                        <span class="slds-page-header__title slds-truncate" title="TechDicer">TechDicer</span>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <br/>
+    <div>
+        <template if:true={showToggle}>
+            <lightning-input type="toggle" label="Multi-select" checked={isChecked} onchange={handleToggle}></lightning-input>
+        </template>
+    </div>
+
+    <lightning-card  variant="Narrow"  title="Pick List" if:true={options}>
+       <template if:false={isChecked}>
+            <div class="slds-p-horizontal_small"> 
+                <c-multi-select-pick-list onselectoption={handleSelectOption} options={options} selected-value={selectedValue} label="Single Select Pick List"></c-multi-select-pick-list>
+            </div>
+        </template>
+        <template if:true={isChecked}>
+            <div class="slds-p-horizontal_small"> 
+                <c-multi-select-pick-list multi-select="true" onselectoption={handleSelectOptionList} options={options} selected-values={selectedValues} label="multiSelect Pick List"></c-multi-select-pick-list>
+            </div>
+        </template>
+        
+   </lightning-card>
+   
+</template>

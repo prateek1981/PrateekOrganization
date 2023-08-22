@@ -1,0 +1,36 @@
+<aura:component controller="Kanban_Assignment" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="objectName" type="List"/>
+    <aura:attribute name="fieldsName" type="String[]"/>
+    <aura:attribute name="selectedFieldValues" type="String"/>
+    <aura:attribute name="recordsCount" type="Integer"/>
+    <aura:attribute name="records" type="Object[]"/>
+    <aura:attribute name="selectedObject" type="String"/>
+    <aura:attribute name="showrec" type="Boolean" default="false"/>
+    <aura:attribute name="picklistVal" type="List"/>
+     <aura:attribute name="showfield" type="Boolean" default="false"/>
+    <aura:handler name="init" value="{!this}" action="{!c.takeObjectList}"/>
+    
+    <div style="{! 'width:'+150+'px;'}" >
+                	<Lightning:select value="{!v.selectedObject}" onchange="{!c.addFields}">
+                        <aura:iteration items="{!v.objectName}" var="Objects" >
+                            <option text="{!Objects.label}" value="{!Objects.value}"/>
+                        </aura:iteration>
+    				</Lightning:select>
+    </div>
+    <aura:if isTrue="{!v.showfield}">
+    	<div style="{! 'width:'+150+'px;'}" >
+    				<Lightning:select value="{!v.selectedFieldValues}" onchange="{!c.pickValues}">
+                        <aura:iteration items="{!v.fieldsName}" var="fields" >
+                            <option text="{!fields.label}" value="{!fields.value}"/>
+                        </aura:iteration>
+    				</Lightning:select>
+    	</div>
+    </aura:if>
+   	
+
+    <div>
+         <aura:if isTrue="{!v.showrec}">
+        	<c:KanbanChildComponent aura:id ="recordscomponent" objName="{!v.selectedObject}" kanbanPicklistField="{!v.selectedFieldValues}" />
+        </aura:if>
+    </div>
+</aura:component>

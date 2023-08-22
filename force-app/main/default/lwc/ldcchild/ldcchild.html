@@ -1,0 +1,30 @@
+<template>
+  <div class="heading">
+    <h1>Create an Account</h1>
+  </div>
+  <div class="container">
+      <div class="section">
+          <lightning-card >
+              <lightning-record-edit-form object-api-name={objectApiName} record-id={recordId}>
+                  <lightning-input-field field-name="Name"></lightning-input-field>
+                  <lightning-input-field field-name="Rating"></lightning-input-field>
+                  <lightning-input-field field-name="Current_Date_Time__c" value={currentTimePlus2Hours} type="datetime"></lightning-input-field>
+              </lightning-record-edit-form>
+          </lightning-card>
+      </div>
+      <div class="section">
+          <lightning-card >
+              <lightning-record-edit-form object-api-name={objectApiName} record-id={recordId}>
+                  <lightning-input-field field-name="Description" required="true"></lightning-input-field>
+                  <lightning-input-field field-name="Dummy_Date__c"></lightning-input-field>
+                  <lightning-input-field field-name="Dummy_PickList__c"></lightning-input-field>
+              </lightning-record-edit-form>
+          </lightning-card>
+
+      </div>
+     
+  </div>
+  <div class="button">
+    <lightning-button type="submit" label="Submit" onclick={submitRecord}></lightning-button>
+  </div>
+</template>

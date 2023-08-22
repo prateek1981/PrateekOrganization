@@ -1,0 +1,92 @@
+<template>
+    <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-size_12-of-12 slds-medium-size_1-of-12">
+        <!-- Place your lightning-combobox and lightning-dual-listbox here -->
+        <lightning-combobox style="height:20px;width:150px"
+                label="Select Object"
+                options={objectOptions}
+                onchange={getFields}>
+            </lightning-combobox>
+        <template lwc:if={checkField}>
+            </lightning-combobox>
+            <lightning-dual-listbox style="height:20px;width:500px;margin-top:20px;"
+            label="Fields"
+            source-label="Available Fields"
+            selected-label="Selected Fields"
+            options={fieldList}
+            onchange={getRecords}
+            >
+            </lightning-dual-listbox>
+        </template>
+        </div>
+    </div>
+    <div>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/> 
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+
+        <div class="slds-col slds-size_12-of-12 slds-medium-size_2-of-12" if:true={visibleData}>
+            <div class="slds-m-top_medium">
+                <lightning-button variant="base" label="Process" title="Looks like a link" if:true={showProcess} onclick={tableMethod} class="slds-m-left_x-small"></lightning-button>
+            </div>
+        </div>
+        <br/>
+        <br/>
+        <div>
+           <template lwc:if={visibleData}>
+            <div>
+                <table lwc:if={checkTable} class="slds-table slds-table_bordered slds-table_cell-buffer">
+                    <thead>
+                    <tr class="slds-line-height_reset">
+                        <th key={field}> 
+                            <lightning-input type="checkbox" checked={allSelected} onchange={handleSelectAll}  ></lightning-input>
+                        </th>
+                        <template for:each={selectedFields} for:item="field">
+                            
+                            <th key={field} onclick={sortRecords} data-column={field}>
+                                    {field}
+                            </th>
+                        </template>
+                    </tr>
+                </thead>
+                    <tbody>
+                        
+                        <template for:each={visibleData} for:item="rec">
+                            
+                            <tr key={rec.records.Id}>
+                                <td > 
+                                    <lightning-input type="checkbox" checked={rec.checkbox} onchange={handleCheckbox} data-rec={rec.records.Id} ></lightning-input>
+                                </td>
+                                <template for:each={selectedFields} for:item="field">
+                                   
+
+                                    <td key={field}>
+                                        <c-client-child row={rec.records} column={field} ></c-client-child>
+                                    </td>
+                                </template>
+                            </tr>
+                        </template>
+                    </tbody>
+                    
+                </table>
+            </div>
+        </template>
+        
+        </div>
+        <template lwc:if={checkTable}>
+            <c-buttons key={childKey} records={allRecords} onupdate={updateData} onchildrendered={handleChildRendered}></c-buttons>
+        </template>
+  </div>
+
+</template>

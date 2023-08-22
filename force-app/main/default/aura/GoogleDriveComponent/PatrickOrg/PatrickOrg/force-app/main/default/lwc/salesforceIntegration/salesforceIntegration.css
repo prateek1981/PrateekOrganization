@@ -1,0 +1,18 @@
+.box {
+    width: 1385px;
+    height: 75px;
+    background-color: rgb(255, 255, 255);
+    border: 2px solid rgb(168, 165, 165);
+    position: relative;
+    top:10px;
+}
+
+.fileupload {
+    margin-right: 10px; 
+    margin-top: -2px;
+}
+.table{
+    margin-top: 5px;
+    position:relative;
+    top:5px;
+}

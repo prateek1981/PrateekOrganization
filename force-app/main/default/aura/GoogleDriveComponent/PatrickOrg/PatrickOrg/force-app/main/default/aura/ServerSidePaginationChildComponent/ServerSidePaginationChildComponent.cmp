@@ -1,0 +1,62 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" controller="ServerSidePaginationController">
+<aura:attribute name="records" type="SObject[]" access="global"/>
+<aura:attribute name="selectedField" type="List" access="global" />
+<aura:attribute name="myColumns" type="List" access="global" />
+<aura:attribute name="selectedObj" type="String" access="global"/>
+<aura:attribute name="recordId" type="ID"/>
+<aura:attribute name="pageSize"  type="Integer"  default="5"/>
+<aura:attribute name="sortedBy" type="String" default="Name"/>
+<aura:attribute name="sortedDirection" type="String" />
+<aura:attribute name="isAscending" type="Boolean" default="true"/>
+<aura:attribute name="pageNumber" type="integer" default="1"/>
+<aura:attribute name="totalPages" type="Integer" default="0"/>
+<aura:attribute name="totalRecords" type="Integer" default="0"/>
+<aura:attribute name="recordStart" type="integer" default="0"/>
+<aura:attribute name="recordEnd" type="integer" default="0"/>
+<aura:attribute name="selectedRowsA" type="List"  />
+<aura:attribute name="allSelectedRows" type="List"  />
+<aura:handler name="init" value="{!this}" action="{!c.getData}" />
+  <div class="slds-modal__content slds-p-around--x-small slds-align_absolute-center slds-size_1-of-1 slds-is-relative">
+    <form class="slds-form--stacked">
+      <div style="width: 100% ; height : 200px;">
+        <lightning:datatable  id="searchTable" 
+                              data="{! v.records }" 
+                              columns="{! v.myColumns }" 
+                              keyField="Id" 
+                              onsort="{!c.getSortedData}" 
+                              sortedBy="{!v.sortedBy}" 
+                              sortedDirection = "{!v.sortedDirection}" 
+                              selectedRows ="{!v.selectedRowsA}" 
+                              onrowselection="{!c.onRowsSelection}" 
+                              hideCheckboxColumn="false">
+        </lightning:datatable>
+      </div>
+      <table name="myTable" id="myTableId">
+        <tr > 
+              <td style="width:7%" align="left">Records per page : </td>
+              <td style="width:3%" align="left">
+                <ui:inputSelect aura:id="record" change="{!c.getData}">
+                  <ui:inputSelectOption text="5" value="5"/>
+                  <ui:inputSelectOption text="10" value="10"/>
+                  <ui:inputSelectOption text="20" value="20"/>
+                  <ui:inputSelectOption text="30" value="30"/>
+                </ui:inputSelect>
+                </td>
+                <td align="right">
+                  <div class="slds-align_absolute-center" style="height:5rem">
+                    <lightning:button label="First"  onclick="{!c.handleFirst}" disabled="{!v.pageNumber == 1}"  />
+                    <lightning:button label="Previous" onclick="{!c.handlePrevious}" disabled="{!v.pageNumber == 1}"/>
+                    <lightning:button label="Next"  onclick="{!c.handleNext}" disabled="{!v.pageNumber == v.totalPages}" />
+                    <lightning:button label="Last"  onclick="{!c.handleLast}" disabled="{!v.pageNumber == v.totalPages}"/>
+                  </div>
+              </td>
+              <td>
+              <div>
+              <p class="slds-modal__content"> Page {!v.pageNumber} of {!v.totalPages}</p>
+            </div>
+              </td>
+        </tr>
+      </table>
+    </form>
+    </div>
+</aura:component>

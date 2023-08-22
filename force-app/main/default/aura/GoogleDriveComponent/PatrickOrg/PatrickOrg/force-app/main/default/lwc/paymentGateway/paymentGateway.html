@@ -1,0 +1,86 @@
+<template>
+  <div class="main">
+  <template if:true={checkPayment}>
+    
+    
+        <div class="box">
+            <div class="box2"> 
+              
+              <img src={processImage} alt="Image Description" class="imageClass"/>
+            </div>
+            <br>
+            <span class="card"> Card Number</span>
+            <div class="input-container">
+              <input type="text" class="card-input" name="cardnumber" onchange={handleChange} placeholder="Enter card number" />
+            </div>
+           
+ <!--        <input type="text" name="first" onchange={handleChange} placeholder="First Name" class="fname" />
+            <input type="text"  name="last" onchange={handleChange} placeholder="Last Name" class="sname" />
+            <input type="text"  name="amount" onchange={handleChange} placeholder="Amount" class="amount"/> -->
+            <br>
+            <span class="month"> Month</span>
+            <select class="month-select" name="month" onchange={handleChange}>
+                <option value="" disabled selected>-month-</option>
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+              <span class="year"> Year</span>
+              <select class="year-select" name="year" onchange={handleChange}>
+                <option value="" disabled selected>-year-</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+                <option value="2026">2026</option>
+                <option value="2027">2027</option>
+                <option value="2028">2028</option>
+              </select>
+              <span class="CVV"> CVV</span>
+              <input type="password" class="number-input" name="cvv" placeholder="CVV" maxlength="4" onchange={handleChange}/>
+              <br>
+              <br>
+              <div class="place-order" onclick={handlePayment}>
+                <span class="place"> Place Order</span>
+              </div>
+            <!--  <lightning-button label="Place Order" title="Non-primary action" onclick={handlePayment} class="place-order"></lightning-button> -->
+              <br>
+              <br>
+              <span class="input-link">For Echeck payment-<a onclick={checkPaymentMethod}>Click Here </a></span>
+          </div>
+       </div> 
+      </template>
+      <template if:false={checkPayment}>
+        <div class="main">
+          <div class="sbox">
+              <div class="sbox2"> 
+                <img src={processImage} alt="Image Description" class="imageClass"/>
+              </div>
+              <br>
+              <span class="srouting">Routing Number</span>
+              <input type="text" class="srouting-number" name="routingnumber" onchange={shandleChange} placeholder="Enter routing number" />
+              <span class="saccount">Account Number</span>
+              <input type="text" class="saccount-number" name="accountnumber" onchange={shandleChange} placeholder="Enter account number" />
+              <span class="saccountname">Account Name</span>
+              <input type="text" class="saccount-name" name="accountname" onchange={shandleChange} placeholder="Enter account name" />
+              <br>
+              <br>
+              <div class="place-order" onclick={handlePayment}>
+                <span class="place"> Place Order</span>
+              </div>
+              <!--<lightning-button label="Place Order" title="Non-primary action" onclick={shandlePayment} class="place-order"></lightning-button>-->
+              <br>
+              <span class="input-link">For Card payment-<a onclick={checkPaymentMethod}>Click Here </a></span>
+          </div>
+        </div> 
+      </template>
+    </div>
+</template>

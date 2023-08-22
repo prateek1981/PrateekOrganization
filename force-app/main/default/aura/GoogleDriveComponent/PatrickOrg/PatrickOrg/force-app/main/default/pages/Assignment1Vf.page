@@ -1,0 +1,91 @@
+<apex:page controller="MjorAssignment1" sidebar="true">
+    <script>
+    	function scriptfun(){
+              scriptfun1();
+            }
+    </script>
+    <apex:sectionHeader title="Pagination" subtitle="Pagination Assignment "/>
+    <apex:form id="component" >
+   		<style>
+                    .spinnerBg {
+                        width: 250%;
+                        height: 250%;
+                        position: absolute;
+                        background-color: #000;
+                        opacity: 0.2;
+                        z-index: 999999;
+                    }
+                    .spinner{
+                        width: 250%;
+                        height: 250%;
+                        position: absolute;
+                        background-image: url("/img/loading32.gif");
+                        background-size: 50px;
+                        background-repeat: no-repeat;
+                        background-attachment: fixed;
+                        background-position: center;
+                        z-index: 9999999;
+                        opacity: 1;
+                    }
+        </style>
+        <apex:actionStatus id="loading" >    
+        	<apex:facet name="start"> 
+                <div class="spinnerBg" />
+				<div class="spinner" />
+            </apex:facet> 
+        </apex:actionStatus> 	
+
+        <apex:pageBlock id="pb" >     
+                <apex:pageBlockSection title="Selected Objects And Fields Section">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value=" All Object " />
+                        <apex:selectList value="{!SelectedObject}"  multiselect="false" size="1" style="width:200px" >
+                            <apex:selectOptions value="{!objNames}"/>
+                            <apex:actionSupport event="onchange" action="{!fieldlist}" reRender="pb"  status="loading" />
+                        </apex:selectList>
+                     </apex:pageBlockSectionItem>
+                    
+                     <apex:pageBlockSectionItem >
+                        <apex:commandButton value="Reset" action="{!reset}" reRender="pb"  status="loading" style="width:100px" disabled="{!ResetButton}"/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+          
+           <apex:outputPanel id="showhide" >     
+            	<apex:panelGrid rendered="{!disableByPanelGride}" columns="4">
+                    <apex:panelGroup >
+                       <p>  Objects: fields </p>
+                         <apex:selectList value="{!SelectedField}" multiselect="true" size="15" style="width:300px" >
+                                <apex:selectOptions value="{!fldList}" />                    
+                         </apex:selectList> 
+                    </apex:panelGroup>
+                    
+                    <apex:panelGroup >
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <apex:commandButton value="Add" action="{!add}"  disabled="{!disableAdd}" reRender="showhide,component"  status="loading" style="width:100px" />
+                        <br/>
+                        <apex:commandButton value="Remove" action="{!remove}" disabled="{!disableRemove}" reRender="showhide,component" status="loading" style="width:100px"/>
+                    </apex:panelGroup>
+                    
+                    <apex:panelGroup >
+                        <p>Selected: fields</p>
+                    	 <apex:selectList value="{!RemoveSelectedfields}" multiselect="true" size="15" style="width:300px">
+                                <apex:selectOptions value="{!addedfldList}"/>
+                         </apex:selectList>
+                    </apex:panelGroup>  
+                    
+                    <apex:panelGroup >
+                    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                    <apex:commandButton action="{!process}" value="Process" disabled="{!disableREMOVE}" reRender="pb,component" oncomplete="scriptfun()" status="loading" style="width:100px" />
+                	</apex:panelGroup>
+                    </apex:panelGrid>
+               		
+            </apex:outputPanel>  
+            
+              <apex:pageBlock rendered="{!hideComponent}">
+        
+                    <c:Test selectobject="{!selectedobject}" selectFields="{!addedfldList}" id="component" /> 
+           </apex:pageBlock>
+        </apex:pageBlock>
+    </apex:form>
+ 
+</apex:page>

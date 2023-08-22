@@ -1,0 +1,24 @@
+<template>
+    <lightning-layout>
+        <lightning-layout-item>
+            <select id="myComboBox" onchange={changeRecordSize}>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+              </select>
+        </lightning-layout-item>
+        <lightning-layout-item class="slds-align_absolute-center">
+            <lightning-button label="First"  onclick={handleFirst} disabled={checkPrevious}></lightning-button>
+            <lightning-button label="Previous"  onclick={handlePrevious} disabled={checkPrevious}></lightning-button>
+            <lightning-button label="Next"  onclick={handleNext} disabled={checkNext}></lightning-button>
+            <lightning-button label="Last"  onclick={handleLast} disabled={checkNext}></lightning-button>
+            
+        </lightning-layout-item>
+        <lightning-layout-item>
+            <p>
+                {currentPage} of {totalPages}
+            </p>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>
+</lightning-combobox>
