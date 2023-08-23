@@ -4,7 +4,6 @@ import fetchFields from '@salesforce/apex/Client_Side_Pagination_Controller.fetc
 import fetchRecords from '@salesforce/apex/Client_Side_Pagination_Controller.fetchRecords';
 import fetchFieldsApi from '@salesforce/apex/Client_Side_Pagination_Controller.fetchFieldsApi';
 export default class Client_Side_Pagination extends LightningElement {
-     <!-- This is a comment>
      @track selectedObject='';
      @track objectOptions= [];
      @track fieldList=[];
