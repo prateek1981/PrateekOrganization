@@ -1,6 +1,8 @@
 global class BatchAssignment implements Database.Batchable<SObject>,Schedulable {
     public List<contact> contactlist;
     String header;
+
+    
         public BatchAssignment(){
             contactlist=new List<contact>();
         }
